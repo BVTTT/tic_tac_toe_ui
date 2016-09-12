@@ -6,7 +6,7 @@ const extend = require('extend');
 
 module.exports = function(config) {
   config.set({
-    webpack: extend(webpackConfig, { watch: true }),
+    webpack: extend(webpackConfig, { watch: false }),
     webpackServer: {
       noInfo: true
     },

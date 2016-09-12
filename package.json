@@ -29,6 +29,7 @@
     "bootstrap-sass": "^3.3.7",
     "es6-promise": "^3.2.1",
     "event-listener": "^1.1.0",
-    "whatwg-fetch": "^1.0.0"
+    "whatwg-fetch": "^1.0.0",
+    "wolfy87-eventemitter": "^5.1.0"
   }
 }

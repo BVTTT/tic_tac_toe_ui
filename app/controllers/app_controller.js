@@ -1,7 +1,7 @@
 import listen from 'event-listener';
 
 import { AppView } from '../views/app_view';
-import { TicTacToeApi } from '../services/tic_tac_toe_api';
+import { GameService } from '../services/game_service';
 
 export class AppController {
   static init(body, routingOptions) {
@@ -9,19 +9,36 @@ export class AppController {
     const controller = new AppController(appContainer, routingOptions);
 
     controller.initEventListeners();
-    controller.ticTacToeApi.init();
   }
 
   constructor(appContainer, routingOptions = {}) {
     this.view = new AppView(appContainer);
 
-    this.ticTacToeApi = new TicTacToeApi(routingOptions);
+    this.gameService = new GameService(routingOptions);
   }
 
   initEventListeners() {
-    listen(this.view.startGameForm, 'submit', () => {
-      this.ticTacToeApi.createGame({ difficulty: 'easy' }).then((response) => {
-        console.log(response);
+    this.view.on('attempt-to-create-game', ({ gameData }) => {
+      this.view.disableForm();
+
+      this.gameService.startGame(gameData).then(([ game ]) => {
+        this.view.activateGame();
+
+        return this.gameService.updateCpuMove();
+      }).then(([ game, playedPosition ]) => {
+        this.view.setCpuPosition(playedPosition);
+      });
+    });
+
+    this.view.on('attempt-to-play', (eventData) => {
+      const position = eventData.selectedBox.position();
+
+      this.gameService.updateUserMove({ position }).then(([ game, position ]) => {
+        this.view.setUserPosition(position);
+      }).then(() => {
+        return this.gameService.updateCpuMove();
+      }).then(([ game, playedPosition ]) => {
+        this.view.setCpuPosition(playedPosition);
       });
     });
   }

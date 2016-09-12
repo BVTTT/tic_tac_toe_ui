@@ -7,6 +7,11 @@ $dashed-border: 1px #ccc dashed;
 
   border: $dashed-border;
   margin-bottom: 15px;
+  background-color: lightgray;
+
+  &.active {
+    background-color: white;
+  }
 
   &.cpu-winner {
     background-color: red;
@@ -38,24 +43,24 @@ $dashed-border: 1px #ccc dashed;
 
     height: 100px;
     border-right: $dashed-border;
-    cursor: pointer;
+    cursor: not-allowed;
 
     &:last-child() {
       border-right: none;
     }
 
     &.taken-by-cpu {
-      background-color: #8c8;
+      background-color: #888;
     }
 
     &.taken-by-user {
-      background-color: #888;
+      background-color: #8c8;
     }
   }
 
-  &.inactive {
+  &.active {
     .col {
-      cursor: not-allowed;
+      cursor: pointer;
     }
   }
 }

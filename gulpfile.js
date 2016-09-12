@@ -33,5 +33,5 @@ gulp.task('test', (done) => {
 
 gulp.task('watch', () => {
   gulp.watch(['app/**/*'], ['compile']);
-  gulp.watch(['app/**/*.js'], ['test']);
+  gulp.watch(['app/**/*.js', 'spec/**/*.js'], ['test']);
 });
