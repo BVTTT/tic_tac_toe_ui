@@ -1,0 +1,8 @@
+version: "2"
+services:
+  app:
+    image: node
+    volumes:
+      - .:/usr/src/tic_tac_toe_ui
+    working_dir: /usr/src/tic_tac_toe_ui
+    network_mode: host

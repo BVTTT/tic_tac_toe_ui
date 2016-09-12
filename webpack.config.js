@@ -2,7 +2,7 @@
 'use strict';
 
 module.exports = {
-  entry: './source/index.js',
+  entry: ['./app/index.js'],
   output: {
     filename: 'index.js',
     library: ['TicTacToe'],
