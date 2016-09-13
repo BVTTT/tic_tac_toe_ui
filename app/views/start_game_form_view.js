@@ -1,7 +1,7 @@
-import { View } from './view';
 import listen from 'event-listener';
+import EventEmitter from 'wolfy87-eventemitter';
 
-export class StartGameFormView extends View {
+export class StartGameFormView extends EventEmitter {
   constructor(form) {
     super();
     this.form = form;
@@ -37,7 +37,7 @@ export class StartGameFormView extends View {
       const gameData = this.data();
       const eventData = { eventName, nativeEvent, gameData };
 
-      this.emit(eventName, [eventData]);
+      this.trigger(eventName, [eventData]);
     });
   }
 }

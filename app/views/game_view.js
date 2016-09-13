@@ -1,9 +1,9 @@
-import { View } from './view';
+import listen from 'event-listener';
+import EventEmitter from 'wolfy87-eventemitter';
+
 import { Box } from './game_view/box';
 
-import listen from 'event-listener';
-
-export class GameView extends View {
+export class GameView extends EventEmitter {
   constructor(gameContainer) {
     super();
     this.gameContainer = gameContainer;
@@ -42,7 +42,7 @@ export class GameView extends View {
       const selectedBox = new Box(nativeEvent.target);
       const eventData = { eventName, selectedBox, nativeEvent };
 
-      this.emit('attempt-to-play', [ eventData ]);
+      this.trigger('attempt-to-play', [ eventData ]);
     });
   }
 }

@@ -1,8 +1,10 @@
+import EventEmitter from 'wolfy87-eventemitter';
+
 import { StartGameFormView } from './start_game_form_view';
 import { GameView } from './game_view';
-import { View } from './view';
+import { forwardEvents } from '../utilities/forward_events';
 
-export class AppView extends View {
+export class AppView extends EventEmitter {
   constructor(appContainer) {
     super();
     this.formView = new StartGameFormView(appContainer.querySelector('.new-game'));
@@ -28,13 +30,7 @@ export class AppView extends View {
   }
 
   initEventListeners() {
-    this.delegateAllEventsFrom(this.formView);
-    this.delegateAllEventsFrom(this.gameView);
-  }
-
-  delegateAllEventsFrom(target) {
-    target.on(/.+/, (eventData) => {
-      this.emit(eventData.eventName, [eventData])
-    });
+    forwardEvents({ from: this.formView, to: this });
+    forwardEvents({ from: this.gameView, to: this });
   }
 }
