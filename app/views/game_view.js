@@ -8,7 +8,7 @@ export class GameView extends EventEmitter {
     super();
     this.gameContainer = gameContainer;
 
-    this.defineEvents(['attempt-to-play']);
+    this.defineEvents(['request-to-play']);
     this.initEventListeners();
   }
 
@@ -24,25 +24,22 @@ export class GameView extends EventEmitter {
     boxElement.classList.add('taken-by-user');
   }
 
-  isActive() {
-    return this.gameContainer.classList.contains('active');
-  }
-
-  activate() {
-    this.gameContainer.classList.add('active');
-  }
-
   initEventListeners() {
     listen(this.gameContainer, 'click', (nativeEvent) => {
-      if(!this.isActive()) {
-        return;
-      }
-
-      const eventName = 'attempt-to-play';
+      const eventName = 'request-to-play';
       const selectedBox = new Box(nativeEvent.target);
       const eventData = { eventName, selectedBox, nativeEvent };
 
-      this.trigger('attempt-to-play', [ eventData ]);
+      this.trigger(eventName, [ eventData ]);
+    });
+  }
+
+  clearAll() {
+    const allBoxes = this.gameContainer.querySelectorAll('.taken-by-user,.taken-by-cpu');
+
+    Array.prototype.forEach.call(allBoxes, (box) => {
+      box.classList.remove('taken-by-user');
+      box.classList.remove('taken-by-cpu');
     });
   }
 }

@@ -6,7 +6,7 @@ export class StartGameFormView extends EventEmitter {
     super();
     this.form = form;
 
-    this.defineEvents(['attempt-to-create-game']);
+    this.defineEvents(['request-to-start-game']);
     this.initEventListeners();
   }
 
@@ -21,19 +21,11 @@ export class StartGameFormView extends EventEmitter {
     return { difficulty }
   }
 
-  disable() {
-    const allElements = this.form.querySelectorAll('*');
-
-    for(let element of allElements) {
-      element.disabled = true;
-    }
-  }
-
   initEventListeners() {
     listen(this.form, 'submit', (nativeEvent) => {
       nativeEvent.preventDefault();
 
-      const eventName = 'attempt-to-create-game';
+      const eventName = 'request-to-start-game';
       const gameData = this.data();
       const eventData = { eventName, nativeEvent, gameData };
 

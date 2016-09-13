@@ -2,7 +2,22 @@ import 'es6-promise';
 import 'whatwg-fetch';
 
 function makeRequest(...params) {
-  return fetch(...params).then((response) => response.json());
+  return fetch(...params)
+    .then((response) => {
+      if(response.status >= 200 && response.status < 300) {
+        return response;
+      }
+
+      throw response;
+    })
+    .then((response) => {
+      if(response.status === 204) {
+        // Do not attempt to read stream if there is no content
+        return null;
+      }
+
+      return response.json();
+    })
 }
 
 export const TicTacToeApi = {
@@ -50,6 +65,15 @@ export const TicTacToeApi = {
     return router.url('cpu_moves').then((url) => {
       return makeRequest(url, {
         method: 'PUT',
+        headers: { Accept: 'application/json' }
+      });
+    });
+  },
+
+  deleteGame(router) {
+    return router.url('self').then((url) => {
+      return makeRequest(url, {
+        method: 'DELETE',
         headers: { Accept: 'application/json' }
       });
     });

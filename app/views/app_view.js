@@ -7,18 +7,21 @@ import { forwardEvents } from '../utilities/forward_events';
 export class AppView extends EventEmitter {
   constructor(appContainer) {
     super();
-    this.formView = new StartGameFormView(appContainer.querySelector('.new-game'));
+    this.appContainer = appContainer;
+
+    this.formView = new StartGameFormView(appContainer.querySelector('.start-game-form'));
     this.gameView = new GameView(appContainer.querySelector('.game-container'));
 
     this.initEventListeners();
   }
 
-  disableForm() {
-    this.formView.disable();
+  activateGame() {
+    this.appContainer.classList.add('active-game');
+    this.gameView.clearAll();
   }
 
-  activateGame() {
-    this.gameView.activate();
+  deactiveGame() {
+    this.appContainer.classList.remove('active-game');
   }
 
   setCpuPosition(playedPosition) {

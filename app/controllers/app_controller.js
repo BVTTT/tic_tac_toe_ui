@@ -18,10 +18,14 @@ export class AppController {
   }
 
   initEventListeners() {
-    this.view.on('attempt-to-create-game', ({ gameData }) => {
-      this.view.disableForm();
-
+    this.view.on('request-to-start-game', ({ gameData }) => {
       this.gameService.startGame(gameData);
+    });
+
+    this.view.on('request-to-play', (eventData) => {
+      const position = eventData.selectedBox.position();
+
+      this.gameService.updateUserMove({ position });
     });
 
     this.gameService.on('game-start-success', () => {
@@ -43,13 +47,8 @@ export class AppController {
     });
 
     this.gameService.on('game-over', ({ game }) => {
-      console.log('Game over!');
-    });
-
-    this.view.on('attempt-to-play', (eventData) => {
-      const position = eventData.selectedBox.position();
-
-      this.gameService.updateUserMove({ position });
+      this.gameService.deleteGame();
+      this.view.deactiveGame();
     });
   }
 }

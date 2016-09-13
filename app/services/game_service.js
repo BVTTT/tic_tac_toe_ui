@@ -8,10 +8,12 @@ export class GameService extends EventEmitter {
     super();
 
     this.defineEvents([
-      'game-start-success',
-      'user-move-success',
       'cpu-move-success',
-      'game-over'
+      'cpu-move-fail',
+      'user-move-success',
+      'user-move-fail',
+      'game-start-success',
+      'game-start-fail'
     ]);
 
     this.router = new Router(routingOptions);
@@ -19,8 +21,9 @@ export class GameService extends EventEmitter {
   }
 
   startApiJourney() {
-    return TicTacToeApi.init(this.router)
-      .then((json) => [json, this.router.hydrateLinks(json.links)]);
+    return TicTacToeApi
+      .init(this.router)
+      .then((json) => this.router.hydrateLinks(json.links));
   }
 
   startGame(gameData) {
@@ -34,6 +37,12 @@ export class GameService extends EventEmitter {
       .then((game) => {
         const eventName = 'game-start-success';
         const eventData = { eventName, game }
+
+        this.trigger(eventName, [ eventData ]);
+      })
+      .catch((response) => {
+        const eventName = 'game-start-fail';
+        const eventData = { eventName };
 
         this.trigger(eventName, [ eventData ]);
       });
@@ -52,6 +61,12 @@ export class GameService extends EventEmitter {
         const eventData = { eventName, playedPosition, game };
 
         this.trigger(eventName, [ eventData ]);
+      })
+      .catch((response) => {
+        const eventName = 'cpu-move-fail';
+        const eventData = { eventName, playedPosition: position };
+
+        this.trigger(eventName, [ eventData ]);
       });
   }
 
@@ -67,7 +82,17 @@ export class GameService extends EventEmitter {
         const eventData = { eventName, game, playedPosition: position };
 
         this.trigger(eventName, [ eventData ]);
+      })
+      .catch((response) => {
+        const eventName = 'user-move-fail';
+        const eventData = { eventName, playedPosition: position };
+
+        this.trigger(eventName, [ eventData ]);
       });
+  }
+
+  deleteGame() {
+    return TicTacToeApi.deleteGame(this.router);
   }
 
   initEventListeners() {
