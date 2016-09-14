@@ -14,8 +14,8 @@ import extend from 'extend';
  * interaction either failed or succeeded
  *
  * These events include:
- *  - 'game-started-success'
- *  - 'game-started-fail'
+ *  - 'game-start-fail'
+ *  - 'game-start-success'
  *  - 'game-over'
  *  - 'game-change'
  *  - 'user-move-success'
@@ -60,7 +60,7 @@ export class GameService extends EventEmitter {
         return new Game(json.data);
       })
       .then((game) => {
-         this.trigger('game-start-success');
+         this.trigger('game-start-success', [{ game }]);
          this.trigger(`${game.currentPlayer()}-turn`);
        })
       .then(() => this.trigger('game-start-success'))

@@ -21,6 +21,10 @@ export class LogController {
       }
     });
 
+    this.gameService.on('game-start-success', ({ game }) => {
+      this.view.info(`It is the ${game.currentPlayer()}'s turn`);
+    });
+
     this.gameService.on('game-change', ({ game, playedPosition }) => {
       this.view.info(`It is the ${game.currentPlayer()}'s turn. Last player played at ${playedPosition.toString()}`);
     });
