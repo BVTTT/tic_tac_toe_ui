@@ -1,6 +1,7 @@
 const gulp = require('gulp');
 const webpack = require('gulp-webpack');
 const sass = require('gulp-sass');
+const webserver = require('gulp-webserver');
 const karma = require('karma');
 
 const path = require('path');
@@ -29,6 +30,15 @@ gulp.task('test', (done) => {
     configFile: path.join(__dirname, 'karma.conf.js'),
     singleRun: true
   }, done).start();
+});
+
+gulp.task('server', () => {
+  gulp.src('dist')
+    .pipe(webserver({
+      host: '0.0.0.0',
+      fallback: 'index.html',
+      port: 8080
+    }));
 });
 
 gulp.task('watch', () => {
