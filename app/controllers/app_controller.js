@@ -1,7 +1,4 @@
-import listen from 'event-listener';
-
 import { AppView } from '../views/app_view';
-import { GameService } from '../services/game_service';
 
 export class AppController {
   constructor({ gameService, appContainer }) {
@@ -11,18 +8,10 @@ export class AppController {
   }
 
   initEventListeners() {
-    this.view.on('request-to-start-game', ({ gameData }) => {
-      this.gameService.startGame(gameData);
-    });
-
     this.view.on('request-to-play', (eventData) => {
       const position = eventData.selectedBox.position();
 
       this.gameService.updateUserMove({ position });
-    });
-
-    this.view.on('request-to-end-game', (eventData) => {
-      this.gameService.deleteGame();
     });
 
     this.gameService.on('game-start-success', () => {

@@ -55,11 +55,22 @@ $dashed-border: 1px #ccc dashed;
   }
 }
 
-.game-lifecycle-container {
+.game-form-container {
   .end-game-btn {
     @extend .btn, .btn-default;
 
     display: none;
+  }
+
+  &.active-game {
+    // hide when game is active
+    .start-game-form {
+      display: none;
+    }
+
+    .end-game-btn {
+      display: block;
+    }
   }
 }
 
@@ -69,17 +80,6 @@ $dashed-border: 1px #ccc dashed;
 
     .col {
       cursor: pointer;
-    }
-  }
-
-  .game-lifecycle-container {
-    // hide when game is active
-    .start-game-form {
-      display: none;
-    }
-
-    .end-game-btn {
-      display: block;
     }
   }
 }
