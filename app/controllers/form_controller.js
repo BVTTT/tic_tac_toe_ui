@@ -7,6 +7,8 @@ export class FormController {
   }
 
   initEventListeners() {
+    this.view.initEventListeners();
+
     this.view.on('request-to-start-game', ({ gameData }) => {
       this.gameService.startGame(gameData);
     });

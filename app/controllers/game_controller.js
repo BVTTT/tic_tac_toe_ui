@@ -10,6 +10,8 @@ export class GameController {
   }
 
   initEventListeners() {
+    this.view.initEventListeners();
+
     this.view.on('request-to-play', (eventData) => {
       const position = eventData.selectedBox.position();
 

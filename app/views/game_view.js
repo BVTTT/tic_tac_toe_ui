@@ -7,8 +7,6 @@ export class GameView extends AppView {
   constructor({ container }) {
     super();
     this.container = container;
-
-    this.initEventListeners();
   }
 
   startGame() {

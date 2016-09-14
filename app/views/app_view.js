@@ -14,4 +14,8 @@ export class AppView extends EventEmitter {
   isActive() {
     return this.container.classList.contains(ACTIVE_STATE_CLASS);
   }
+
+  initEventListeners() {
+    // No op
+  }
 }

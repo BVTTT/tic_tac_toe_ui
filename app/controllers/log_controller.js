@@ -9,6 +9,8 @@ export class LogController {
   }
 
   initEventListeners() {
+    this.view.initEventListeners();
+
     this.gameService.on('game-over', ({ game }) => {
       if(game.isDeadlocked()) {
         this.view.warning('Game is deadlocked');

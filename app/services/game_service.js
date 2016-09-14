@@ -5,20 +5,21 @@ import EventEmitter from 'wolfy87-eventemitter';
 import extend from 'extend';
 
 export class GameService extends EventEmitter {
+  static init(routingOptions) {
+    const service = new GameService(routingOptions);
+
+    service.initEventListeners();
+
+    return service;
+  }
+
   constructor(routingOptions) {
     super();
 
-    this.defineEvents([
-      'cpu-move-success',
-      'cpu-move-fail',
-      'user-move-success',
-      'user-move-fail',
-      'game-start-success',
-      'game-start-fail'
-    ]);
+    // Define events to allow using RegExp listener
+    this.defineEvents([ 'user-move-success', 'cpu-move-success' ]);
 
     this.router = new Router(routingOptions);
-    this.initEventListeners();
   }
 
   startApiJourney() {
@@ -35,18 +36,8 @@ export class GameService extends EventEmitter {
 
         return new Game(json.data);
       })
-      .then((game) => {
-        const eventName = 'game-start-success';
-        const eventData = { eventName, game }
-
-        this.trigger(eventName, [ eventData ]);
-      })
-      .catch((response) => {
-        const eventName = 'game-start-fail';
-        const eventData = { eventName };
-
-        this.trigger(eventName, [ eventData ]);
-      });
+      .then((game) => this.trigger('game-start-success'))
+      .catch((response) => this.trigger('game-start-fail'));
   }
 
   updateCpuMove() {
@@ -58,17 +49,11 @@ export class GameService extends EventEmitter {
         return [new Game(json.data), playedPosition];
       })
       .then(([ game, playedPosition ]) => {
-        const eventName = 'cpu-move-success';
-        const eventData = { eventName, playedPosition, game };
+        const eventData = { playedPosition, game };
 
-        this.trigger(eventName, [ eventData ]);
+        this.trigger('cpu-move-success', [ eventData ]);
       })
-      .catch((response) => {
-        const eventName = 'cpu-move-fail';
-        const eventData = { eventName };
-
-        this.trigger(eventName, [ eventData ]);
-      });
+      .catch((response) => this.trigger('cpu-move-fail'));
   }
 
   updateUserMove({ position }) {
@@ -79,40 +64,30 @@ export class GameService extends EventEmitter {
         return new Game(json.data);
       })
       .then((game) => {
-        const eventName = 'user-move-success';
-        const eventData = { eventName, game, playedPosition: position };
+        const eventData = { game, playedPosition: position };
 
-        this.trigger(eventName, [ eventData ]);
+        this.trigger('user-move-success', [ eventData ]);
       })
       .catch((response) => {
-        const eventName = 'user-move-fail';
-        const eventData = { eventName, response, playedPosition: position };
+        const eventData = { response, playedPosition: position };
 
-        this.trigger(eventName, [ eventData ]);
+        this.trigger('user-move-fail', [ eventData ]);
       });
   }
 
   deleteGame() {
-    return TicTacToeApi.deleteGame(this.router)
-      .then(() => {
-        const eventName = 'game-end-success';
-        const eventData = { eventName };
-
-        this.trigger(eventName, [ eventData ]);
-      });
+    return TicTacToeApi.deleteGame(this.router).then(() => this.trigger('game-end-success'));
   }
 
   initEventListeners() {
-    this.on(/(user|cpu)-move-success/, (originalEventData) => {
-      let eventName, eventData;
+    this.on(/(user|cpu)-move-success/, (eventData) => {
+      let eventName;
 
-      if(originalEventData.game.isOver()) {
+      if(eventData.game.isOver()) {
         eventName = 'game-over';
       } else {
         eventName = 'game-change';
       }
-
-      eventData = extend({ eventName }, originalEventData);
 
       this.trigger(eventName, [ eventData ]);
     });

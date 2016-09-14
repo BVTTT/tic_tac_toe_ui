@@ -6,7 +6,7 @@ import { GameService } from './services/game_service';
 export class App {
   constructor(body, routingOptions = {}) {
     const scope = {
-      gameService: new GameService(routingOptions),
+      gameService: GameService.init(routingOptions),
       appContainer: body.querySelector('.app-container')
     };
 

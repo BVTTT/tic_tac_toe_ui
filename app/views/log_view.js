@@ -1,3 +1,4 @@
+import { AppView } from './app_view';
 const STATES = [
   'danger',
   'default',
@@ -6,8 +7,9 @@ const STATES = [
   'info'
 ];
 
-export class LogView {
+export class LogView extends AppView {
   constructor({ container }) {
+    super();
     this.container = container;
   }
 
