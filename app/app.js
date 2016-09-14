@@ -1,6 +1,6 @@
 import { LogController } from './controllers/log_controller';
 import { FormController } from './controllers/form_controller';
-import { AppController } from './controllers/app_controller';
+import { GameController } from './controllers/game_controller';
 import { GameService } from './services/game_service';
 
 export class App {
@@ -11,7 +11,7 @@ export class App {
     };
 
     this.controllers = [
-      new AppController(scope),
+      new GameController(scope),
       new LogController(scope),
       new FormController(scope)
     ]

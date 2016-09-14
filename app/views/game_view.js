@@ -12,6 +12,15 @@ export class GameView extends EventEmitter {
     this.initEventListeners();
   }
 
+  startGame() {
+    this.clearAll();
+    this.gameContainer.classList.add('active-game');
+  }
+
+  endGame() {
+    this.gameContainer.classList.remove('active-game');
+  }
+
   setCpuPosition(position) {
     const [ x, y ] = position;
     const boxElement = this.gameContainer.querySelector(`[data-x="${x}"][data-y="${y}"]`);
@@ -26,8 +35,17 @@ export class GameView extends EventEmitter {
     boxElement.innerHTML = 'X';
   }
 
+  isActive() {
+    return this.gameContainer.classList.contains('active-game');
+  }
+
   initEventListeners() {
     listen(this.gameContainer, 'click', (nativeEvent) => {
+      // halt if game is not active
+      if(!this.isActive()) {
+        return;
+      }
+
       const eventName = 'request-to-play';
       const selectedBox = new Box(nativeEvent.target);
       const eventData = { eventName, selectedBox, nativeEvent };

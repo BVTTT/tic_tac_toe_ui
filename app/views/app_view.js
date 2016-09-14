@@ -8,9 +8,6 @@ export class AppView extends EventEmitter {
   constructor(appContainer) {
     super();
     this.appContainer = appContainer;
-    this.statusContainer = appContainer.querySelector('.game-status');
-
-    this.startGameFormView = new EventEmitter();
     this.gameView = new GameView(appContainer.querySelector('.game-container'));
 
     this.initEventListeners();

@@ -1,8 +1,8 @@
-import { AppView } from '../views/app_view';
+import { GameView } from '../views/game_view';
 
-export class AppController {
+export class GameController {
   constructor({ gameService, appContainer }) {
-    this.view = new AppView(appContainer);
+    this.view = new GameView(appContainer.querySelector('.game-container'));
 
     this.gameService = gameService;
   }
@@ -15,13 +15,13 @@ export class AppController {
     });
 
     this.gameService.on('game-start-success', () => {
-      this.view.activateGame();
+      this.view.startGame();
 
       this.gameService.updateCpuMove();
     });
 
     this.gameService.on('game-end-success', () => {
-      this.view.deactiveGame();
+      this.view.endGame();
     });
 
     this.gameService.on('cpu-move-success', ({ playedPosition }) => {

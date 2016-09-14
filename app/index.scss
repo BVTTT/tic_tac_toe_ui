@@ -9,6 +9,14 @@ $dashed-border: 1px #ccc dashed;
   margin-bottom: 15px;
   background-color: lightgray;
 
+  &.active-game {
+    background-color: white;
+
+    .col {
+      cursor: pointer;
+    }
+  }
+
   &.cpu-winner {
     background-color: red;
     border: 3px solid darkred;
@@ -74,13 +82,4 @@ $dashed-border: 1px #ccc dashed;
   }
 }
 
-.active-game {
-  .game-container {
-    background-color: white;
-
-    .col {
-      cursor: pointer;
-    }
-  }
-}
 
