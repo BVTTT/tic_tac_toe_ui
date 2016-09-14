@@ -13,11 +13,11 @@ export class LogController {
 
     this.gameService.on('game-over', ({ game }) => {
       if(game.isDeadlocked()) {
-        this.view.warning('Game is deadlocked');
+        this.view.default('Game is deadlocked');
       } else if(game.userWon()) {
         this.view.success('User won!');
       } else {
-        this.view.danger('Cpu won :(');
+        this.view.warning('Cpu won :(');
       }
     });
 

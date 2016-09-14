@@ -3,7 +3,7 @@
 $dashed-border: 1px #ccc dashed;
 
 .game-container {
-  @extend .container;
+  @extend .container, .clearfix;
 
   border: $dashed-border;
   margin-bottom: 15px;
@@ -17,20 +17,6 @@ $dashed-border: 1px #ccc dashed;
     }
   }
 
-  &.cpu-winner {
-    background-color: red;
-    border: 3px solid darkred;
-  }
-
-  &.user-winner {
-    background-color: green;
-    border: 3px solid darkgreen;
-  }
-
-  &.deadlocked {
-    background-color: darkgrey;
-    border: 3px solid darkblue;
-  }
 
   .row {
     border-bottom: $dashed-border;
@@ -54,11 +40,11 @@ $dashed-border: 1px #ccc dashed;
     }
 
     &.taken-by-cpu {
-      background-color: #888;
+      @extend .bg-warning;
     }
 
     &.taken-by-user {
-      background-color: #8c8;
+      @extend .bg-success;
     }
   }
 }
