@@ -1,35 +1,10 @@
 import 'es6-promise';
 import 'whatwg-fetch';
 
-class ResponseError extends Error {
-  constructor(msg) {
-    super(msg);
-    this.name = 'ResponseError';
-  }
-}
-
-function makeRequest(...params) {
-  return fetch(...params)
-    .then((response) => {
-      if(response.status >= 200 && response.status < 300) {
-        return response;
-      }
-
-      // Fail with json object ready
-      return response.json().then((json) => {
-        throw new ResponseError(json.errors[0].detail);
-      });
-    })
-    .then((response) => {
-      if(response.status === 204) {
-        // Do not attempt to read stream if there is no content
-        return null;
-      }
-
-      return response.json();
-    });
-}
-
+/**
+ * A module that implements the http specific details of each endpoint for
+ * the tic tac toe api
+ */
 export const TicTacToeApi = {
   init(router) {
     return router.homeUrl().then((url) => makeRequest(url));
@@ -89,3 +64,33 @@ export const TicTacToeApi = {
     });
   }
 };
+
+class ResponseError extends Error {
+  constructor(msg) {
+    super(msg);
+    this.name = 'ResponseError';
+  }
+}
+
+function makeRequest(...params) {
+  return fetch(...params)
+    .then((response) => {
+      if(response.status >= 200 && response.status < 300) {
+        return response;
+      }
+
+      // Fail with json object ready
+      return response.json().then((json) => {
+        throw new ResponseError(json.errors[0].detail);
+      });
+    })
+    .then((response) => {
+      if(response.status === 204) {
+        // Do not attempt to read stream if there is no content
+        return null;
+      }
+
+      return response.json();
+    });
+}
+

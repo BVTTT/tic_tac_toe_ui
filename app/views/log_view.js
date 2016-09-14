@@ -1,4 +1,5 @@
 import { AppView } from './app_view';
+
 const STATES = [
   'danger',
   'default',

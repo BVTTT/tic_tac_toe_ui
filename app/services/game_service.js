@@ -4,6 +4,29 @@ import { Game } from '../models/game';
 import EventEmitter from 'wolfy87-eventemitter';
 import extend from 'extend';
 
+/**
+ * The GameService is the base component when interacting with the tic tac toe  api
+ *
+ * This class uses the TicTacToeApi module to make calls to the tic_tac_toe_api
+ * It maintains a router which is dynamically updated with api links that can be explored.
+ *
+ * It emits events when it notices things in the game change or notifying that an api
+ * interaction either failed or succeeded
+ *
+ * These events include:
+ *  - 'game-started-success'
+ *  - 'game-started-fail'
+ *  - 'game-over'
+ *  - 'game-change'
+ *  - 'user-move-success'
+ *  - 'user-move-fail'
+ *  - 'cpu-move-success'
+ *  - 'cpu-move-fail'
+ *  - 'game-end-success'
+ *  - 'user-turn'
+ *  - 'cpu-turn'
+ *
+ */
 export class GameService extends EventEmitter {
   static init(routingOptions) {
     const service = new GameService(routingOptions);

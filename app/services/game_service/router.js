@@ -1,10 +1,9 @@
-class UnavailableLinkError extends Error {
-  constructor(message) {
-    super(message);
-    this.name = 'UnavailableLinkError';
-  }
-}
-
+/**
+ * Simple abstraction around links received from the api
+ *
+ * It is basically a cache of the links made available by the api
+ * it also helps drive the flow of the game via hypermedia
+ */
 export class Router {
   constructor({ apiHost = 'http://localhost:3000' } = {}) {
     this.host = apiHost;
@@ -36,3 +35,9 @@ export class Router {
   }
 }
 
+class UnavailableLinkError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'UnavailableLinkError';
+  }
+}

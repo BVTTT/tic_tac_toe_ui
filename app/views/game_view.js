@@ -2,7 +2,14 @@ import listen from 'event-listener';
 import { AppView } from './app_view'
 
 import { Box } from './game_view/box';
-
+/**
+ * Abstracts user interactions when interacting with the game board
+ *
+ * It emits the following events:
+ * - 'request-to-play'
+ *
+ * It also has some functions to update the state of the board
+ */
 export class GameView extends AppView {
   constructor({ container }) {
     super();

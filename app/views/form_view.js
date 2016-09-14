@@ -1,6 +1,13 @@
 import listen from 'event-listener';
 import { AppView } from './app_view';
 
+/**
+ * Abstracts user interactions when interacting with the form
+ *
+ * It emits the following events:
+ * - 'request-to-start-game'
+ * - 'request-to-start-end'
+ */
 export class FormView extends AppView {
   constructor({ container }) {
     super();
