@@ -4,17 +4,10 @@ import { AppView } from '../views/app_view';
 import { GameService } from '../services/game_service';
 
 export class AppController {
-  static init(body, routingOptions) {
-    const appContainer = body.querySelector('.app-container');
-    const controller = new AppController(appContainer, routingOptions);
-
-    controller.initEventListeners();
-  }
-
-  constructor(appContainer, routingOptions = {}) {
+  constructor({ gameService, appContainer }) {
     this.view = new AppView(appContainer);
 
-    this.gameService = new GameService(routingOptions);
+    this.gameService = gameService;
   }
 
   initEventListeners() {
@@ -56,24 +49,6 @@ export class AppController {
 
     this.gameService.on('game-over', ({ game }) => {
       this.gameService.deleteGame();
-
-      if(game.isDeadlocked()) {
-        this.view.logWarning('Game is deadlocked');
-      } else if(game.userWon()) {
-        this.view.logSuccess('User won!');
-      } else {
-        this.view.logError('Cpu won :(');
-      }
-    });
-
-    this.gameService.on('game-change', ({ game, playedPosition }) => {
-      this.view.logInfo(`It is the ${game.currentPlayer()}'s turn. Last player played at ${playedPosition.toString()}`);
-    });
-
-    this.gameService.on('user-move-fail', ({ response }) => {
-      const errorMessage = response.errors[0].detail;
-
-      this.view.logError(errorMessage);
     });
   }
 }

@@ -1,3 +1,5 @@
-import { AppController } from './controllers/app_controller';
+import { App } from './app';
 
-AppController.init(document.body, { apiHost: 'http://192.168.99.100:3000' });
+const app = new App(document.body, { apiHost: 'http://192.168.99.100:3000' });
+
+app.init();
