@@ -1,7 +1,6 @@
 import EventEmitter from 'wolfy87-eventemitter';
 
 import { GameView } from './game_view';
-import { forwardEvents } from '../utilities/forward_events';
 import listen from 'event-listener';
 
 export class AppView extends EventEmitter {
@@ -28,9 +27,5 @@ export class AppView extends EventEmitter {
 
   setUserPosition(playedPosition) {
     return this.gameView.setUserPosition(playedPosition);
-  }
-
-  initEventListeners() {
-    forwardEvents({ from: this.gameView, to: this });
   }
 }
