@@ -1,0 +1,7 @@
+version: "2"
+services:
+  app:
+    image: tic_tac_toe_ui
+    ports:
+      - 80:8080
+

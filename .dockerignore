@@ -1,0 +1,9 @@
+.git
+node_modules
+*.sw?
+.gitignore
+.docker-aliases.sh
+docker-compose*
+spec
+karma*
+
