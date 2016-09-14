@@ -7,22 +7,22 @@ const STATES = [
 ];
 
 export class LogView {
-  constructor({ logContainer }) {
-    this.logContainer = logContainer;
+  constructor({ container }) {
+    this.container = container;
   }
 
   clearStates() {
     STATES.forEach((state) => {
-      this.logContainer.classList.remove(`panel-${state}`);
+      this.container.classList.remove(`panel-${state}`);
     });
   }
 
   addState(state) {
-    this.logContainer.classList.add(`panel-${state}`)
+    this.container.classList.add(`panel-${state}`)
   }
 
   setText(text) {
-    this.logContainer.querySelector('.panel-heading').innerHTML = text;
+    this.container.querySelector('.panel-heading').innerHTML = text;
   }
 
   log(state, text) {

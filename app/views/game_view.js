@@ -1,46 +1,41 @@
 import listen from 'event-listener';
-import EventEmitter from 'wolfy87-eventemitter';
+import { AppView } from './app_view'
 
 import { Box } from './game_view/box';
 
-export class GameView extends EventEmitter {
-  constructor(gameContainer) {
+export class GameView extends AppView {
+  constructor({ container }) {
     super();
-    this.gameContainer = gameContainer;
+    this.container = container;
 
-    this.defineEvents(['request-to-play']);
     this.initEventListeners();
   }
 
   startGame() {
     this.clearAll();
-    this.gameContainer.classList.add('active-game');
+    this.setActiveState();
   }
 
   endGame() {
-    this.gameContainer.classList.remove('active-game');
+    this.unsetActiveState();
   }
 
   setCpuPosition(position) {
     const [ x, y ] = position;
-    const boxElement = this.gameContainer.querySelector(`[data-x="${x}"][data-y="${y}"]`);
+    const boxElement = this.container.querySelector(`[data-x="${x}"][data-y="${y}"]`);
     boxElement.classList.add('taken-by-cpu');
     boxElement.innerHTML = 'O';
   }
 
   setUserPosition(position) {
     const [ x, y ] = position;
-    const boxElement = this.gameContainer.querySelector(`[data-x="${x}"][data-y="${y}"]`);
+    const boxElement = this.container.querySelector(`[data-x="${x}"][data-y="${y}"]`);
     boxElement.classList.add('taken-by-user');
     boxElement.innerHTML = 'X';
   }
 
-  isActive() {
-    return this.gameContainer.classList.contains('active-game');
-  }
-
   initEventListeners() {
-    listen(this.gameContainer, 'click', (nativeEvent) => {
+    listen(this.container, 'click', (nativeEvent) => {
       // halt if game is not active
       if(!this.isActive()) {
         return;
@@ -55,7 +50,7 @@ export class GameView extends EventEmitter {
   }
 
   clearAll() {
-    const allBoxes = this.gameContainer.querySelectorAll('.taken-by-user,.taken-by-cpu');
+    const allBoxes = this.container.querySelectorAll('.taken-by-user,.taken-by-cpu');
 
     Array.prototype.forEach.call(allBoxes, (box) => {
       box.classList.remove('taken-by-user');

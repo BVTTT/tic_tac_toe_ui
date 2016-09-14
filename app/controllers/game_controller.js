@@ -2,7 +2,9 @@ import { GameView } from '../views/game_view';
 
 export class GameController {
   constructor({ gameService, appContainer }) {
-    this.view = new GameView(appContainer.querySelector('.game-container'));
+    this.view = new GameView({
+      container: appContainer.querySelector('.game-container')
+    });
 
     this.gameService = gameService;
   }

@@ -1,31 +1,17 @@
 import EventEmitter from 'wolfy87-eventemitter';
 
-import { GameView } from './game_view';
-import listen from 'event-listener';
+const ACTIVE_STATE_CLASS = 'active-game';
 
 export class AppView extends EventEmitter {
-  constructor(appContainer) {
-    super();
-    this.appContainer = appContainer;
-    this.gameView = new GameView(appContainer.querySelector('.game-container'));
-
-    this.initEventListeners();
+  setActiveState() {
+    this.container.classList.add(ACTIVE_STATE_CLASS);
   }
 
-  activateGame() {
-    this.appContainer.classList.add('active-game');
-    this.gameView.clearAll();
+  unsetActiveState() {
+    this.container.classList.remove(ACTIVE_STATE_CLASS);
   }
 
-  deactiveGame() {
-    this.appContainer.classList.remove('active-game');
-  }
-
-  setCpuPosition(playedPosition) {
-    return this.gameView.setCpuPosition(playedPosition);
-  }
-
-  setUserPosition(playedPosition) {
-    return this.gameView.setUserPosition(playedPosition);
+  isActive() {
+    return this.container.classList.contains(ACTIVE_STATE_CLASS);
   }
 }

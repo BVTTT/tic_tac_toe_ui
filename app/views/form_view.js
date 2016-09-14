@@ -1,12 +1,12 @@
 import listen from 'event-listener';
-import EventEmitter from 'wolfy87-eventemitter';
+import { AppView } from './app_view';
 
-export class FormView extends EventEmitter {
-  constructor({ formContainer }) {
+export class FormView extends AppView {
+  constructor({ container }) {
     super();
-    this.formContainer = formContainer;
-    this.createGameForm = formContainer.querySelector('.start-game-form');
-    this.endGameButton = formContainer.querySelector('.end-game-btn');
+    this.container = container;
+    this.createGameForm = container.querySelector('.start-game-form');
+    this.endGameButton = container.querySelector('.end-game-btn');
 
     this.initEventListeners();
   }
@@ -20,14 +20,6 @@ export class FormView extends EventEmitter {
     const difficulty = selectElement.options[selectElement.selectedIndex].value;
 
     return { difficulty }
-  }
-
-  setActiveGameState() {
-    this.formContainer.classList.add('active-game');
-  }
-
-  removeActiveGameState() {
-    this.formContainer.classList.remove('active-game');
   }
 
   initEventListeners() {

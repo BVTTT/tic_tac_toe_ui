@@ -15,7 +15,7 @@ describe('FormView', function () {
       <button class="end-game-btn"/>
     `;
 
-    this.subject = new FormView({ formContainer: this.formContainer });
+    this.subject = new FormView({ container: this.formContainer });
   });
 
   describe('#createGameData', function () {
