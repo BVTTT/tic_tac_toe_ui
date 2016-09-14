@@ -1,6 +1,13 @@
 import 'es6-promise';
 import 'whatwg-fetch';
 
+class ResponseError extends Error {
+  constructor(msg) {
+    super(msg);
+    this.name = 'ResponseError';
+  }
+}
+
 function makeRequest(...params) {
   return fetch(...params)
     .then((response) => {
@@ -10,7 +17,7 @@ function makeRequest(...params) {
 
       // Fail with json object ready
       return response.json().then((json) => {
-        throw json;
+        throw new ResponseError(json.errors[0].detail);
       });
     })
     .then((response) => {

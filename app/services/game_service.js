@@ -36,7 +36,11 @@ export class GameService extends EventEmitter {
 
         return new Game(json.data);
       })
-      .then((game) => this.trigger('game-start-success'))
+      .then((game) => {
+         this.trigger('game-start-success');
+         this.trigger(`${game.currentPlayer()}-turn`);
+       })
+      .then(() => this.trigger('game-start-success'))
       .catch((response) => this.trigger('game-start-fail'));
   }
 
@@ -68,10 +72,8 @@ export class GameService extends EventEmitter {
 
         this.trigger('user-move-success', [ eventData ]);
       })
-      .catch((response) => {
-        const eventData = { response, playedPosition: position };
-
-        this.trigger('user-move-fail', [ eventData ]);
+      .catch((error) => {
+        this.trigger('user-move-fail', [ error ]);
       });
   }
 
@@ -81,15 +83,18 @@ export class GameService extends EventEmitter {
 
   initEventListeners() {
     this.on(/(user|cpu)-move-success/, (eventData) => {
-      let eventName;
+      const events = [];
 
       if(eventData.game.isOver()) {
-        eventName = 'game-over';
+        events.push('game-over');
       } else {
-        eventName = 'game-change';
+        events.push(`${eventData.game.currentPlayer()}-turn`);
+        events.push('game-change');
       }
 
-      this.trigger(eventName, [ eventData ]);
+      events.forEach((eventName) => {
+        this.trigger(eventName, [ eventData ]);
+      });
     });
   }
 }

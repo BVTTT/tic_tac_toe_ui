@@ -25,10 +25,8 @@ export class LogController {
       this.view.info(`It is the ${game.currentPlayer()}'s turn. Last player played at ${playedPosition.toString()}`);
     });
 
-    this.gameService.on('user-move-fail', ({ response }) => {
-      const errorMessage = response.errors[0].detail;
-
-      this.view.danger(errorMessage);
+    this.gameService.on('user-move-fail', ({ message }) => {
+      this.view.danger(message);
     });
   }
 }

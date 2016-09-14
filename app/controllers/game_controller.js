@@ -20,7 +20,9 @@ export class GameController {
 
     this.gameService.on('game-start-success', () => {
       this.view.startGame();
+    });
 
+    this.gameService.on('cpu-turn', () => {
       this.gameService.updateCpuMove();
     });
 
@@ -34,10 +36,6 @@ export class GameController {
 
     this.gameService.on('user-move-success', ({ playedPosition, game }) => {
       this.view.setUserPosition(playedPosition);
-
-      if(game.isActive()) {
-        this.gameService.updateCpuMove();
-      }
     });
 
     this.gameService.on('game-over', ({ game }) => {
