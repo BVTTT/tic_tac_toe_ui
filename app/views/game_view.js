@@ -16,12 +16,14 @@ export class GameView extends EventEmitter {
     const [ x, y ] = position;
     const boxElement = this.gameContainer.querySelector(`[data-x="${x}"][data-y="${y}"]`);
     boxElement.classList.add('taken-by-cpu');
+    boxElement.innerHTML = 'O';
   }
 
   setUserPosition(position) {
     const [ x, y ] = position;
     const boxElement = this.gameContainer.querySelector(`[data-x="${x}"][data-y="${y}"]`);
     boxElement.classList.add('taken-by-user');
+    boxElement.innerHTML = 'X';
   }
 
   initEventListeners() {
@@ -40,6 +42,7 @@ export class GameView extends EventEmitter {
     Array.prototype.forEach.call(allBoxes, (box) => {
       box.classList.remove('taken-by-user');
       box.classList.remove('taken-by-cpu');
+      box.innerHTML = '';
     });
   }
 }

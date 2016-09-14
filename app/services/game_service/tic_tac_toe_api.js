@@ -8,7 +8,10 @@ function makeRequest(...params) {
         return response;
       }
 
-      throw response;
+      // Fail with json object ready
+      return response.json().then((json) => {
+        throw json;
+      });
     })
     .then((response) => {
       if(response.status === 204) {
@@ -17,7 +20,7 @@ function makeRequest(...params) {
       }
 
       return response.json();
-    })
+    });
 }
 
 export const TicTacToeApi = {

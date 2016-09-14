@@ -2,6 +2,7 @@ import { Router } from './game_service/router';
 import { TicTacToeApi } from './game_service/tic_tac_toe_api';
 import { Game } from '../models/game';
 import EventEmitter from 'wolfy87-eventemitter';
+import extend from 'extend';
 
 export class GameService extends EventEmitter {
   constructor(routingOptions) {
@@ -64,7 +65,7 @@ export class GameService extends EventEmitter {
       })
       .catch((response) => {
         const eventName = 'cpu-move-fail';
-        const eventData = { eventName, playedPosition: position };
+        const eventData = { eventName };
 
         this.trigger(eventName, [ eventData ]);
       });
@@ -85,24 +86,35 @@ export class GameService extends EventEmitter {
       })
       .catch((response) => {
         const eventName = 'user-move-fail';
-        const eventData = { eventName, playedPosition: position };
+        const eventData = { eventName, response, playedPosition: position };
 
         this.trigger(eventName, [ eventData ]);
       });
   }
 
   deleteGame() {
-    return TicTacToeApi.deleteGame(this.router);
+    return TicTacToeApi.deleteGame(this.router)
+      .then(() => {
+        const eventName = 'game-end-success';
+        const eventData = { eventName };
+
+        this.trigger(eventName, [ eventData ]);
+      });
   }
 
   initEventListeners() {
-    this.on(/(user|cpu)-move-success/, ({ game }) => {
-      if(game.isOver()) {
-        const eventName = 'game-over';
-        const eventData = { eventName, game };
+    this.on(/(user|cpu)-move-success/, (originalEventData) => {
+      let eventName, eventData;
 
-        this.trigger('game-over', [ eventData ]);
+      if(originalEventData.game.isOver()) {
+        eventName = 'game-over';
+      } else {
+        eventName = 'game-change';
       }
+
+      eventData = extend({ eventName }, originalEventData);
+
+      this.trigger(eventName, [ eventData ]);
     });
   }
 }

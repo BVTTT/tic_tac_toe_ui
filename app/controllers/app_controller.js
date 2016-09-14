@@ -28,10 +28,18 @@ export class AppController {
       this.gameService.updateUserMove({ position });
     });
 
+    this.view.on('request-to-end-game', (eventData) => {
+      this.gameService.deleteGame();
+    });
+
     this.gameService.on('game-start-success', () => {
       this.view.activateGame();
 
       this.gameService.updateCpuMove();
+    });
+
+    this.gameService.on('game-end-success', () => {
+      this.view.deactiveGame();
     });
 
     this.gameService.on('cpu-move-success', ({ playedPosition }) => {
@@ -48,7 +56,24 @@ export class AppController {
 
     this.gameService.on('game-over', ({ game }) => {
       this.gameService.deleteGame();
-      this.view.deactiveGame();
+
+      if(game.isDeadlocked()) {
+        this.view.logWarning('Game is deadlocked');
+      } else if(game.userWon()) {
+        this.view.logSuccess('User won!');
+      } else {
+        this.view.logError('Cpu won :(');
+      }
+    });
+
+    this.gameService.on('game-change', ({ game, playedPosition }) => {
+      this.view.logInfo(`It is the ${game.currentPlayer()}'s turn. Last player played at ${playedPosition.toString()}`);
+    });
+
+    this.gameService.on('user-move-fail', ({ response }) => {
+      const errorMessage = response.errors[0].detail;
+
+      this.view.logError(errorMessage);
     });
   }
 }
